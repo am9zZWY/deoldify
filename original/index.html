@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>DeOldify Original Artistic Example</title>
     <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
 </head>
 <body>
@@ -63,7 +63,7 @@
 
         async function runMyModel() {
             // create a session
-            const myOrtSession = await ort.InferenceSession.create("deoldify-art.onnx");
+            const myOrtSession = await ort.InferenceSession.create("https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-art.onnx");
             console.log("Session created:", myOrtSession);
 
             const image = new Image();
