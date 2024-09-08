@@ -71,7 +71,7 @@ model_fp32 = '/content/deoldify-final.onnx'
 model_quant = '/content/deoldify-quant.onnx'
 quantized_model = quantize_dynamic(model_fp32, model_quant, weight_type=QuantType.QUInt8)
 ```
-Remove initializer from input of deoldify-quant.onnx file:
+Remove initializer from input of deoldify-quant.onnx file (otherwise the model will be throwing an error related to initializer):
 
 ```python
 !python /content/remove_initializer_from_input.py --input /content/deoldify-quant.onnx --output /content/deoldify-quant-clear.onnx
