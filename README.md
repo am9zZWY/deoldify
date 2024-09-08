@@ -4,7 +4,7 @@
 
 
 ### **Description / Rationale**
-This repository demonstrates web-based implementation of DeOldify, a Deep Learning based project for colorizing and restoring old images. This project demonstrates implementation of 2 models:
+This repository demonstrates web-based implementation of <a href="https://github.com/jantic/DeOldify">DeOldify, a Deep Learning based project for colorizing and restoring old images</a>. This project demonstrates implementation of 2 models:
 1. Original artistic DeOldify model ("original" folder)
 2. Quantized DeOldify model ("quantized" folder).
 
