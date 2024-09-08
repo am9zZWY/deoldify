@@ -12,7 +12,8 @@ To use a DeOldify example, copy the corresponding html file contents. To dowload
 2. Quantized model: https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-quant.onnx (~61mb)
 
 
-### **Converting .ply to .splat and compression**
+### **Onnx files and Quantization**
+Original onnx files were taken from releases page of <a href='https://github.com/instant-high/deoldify-onnx/releases/tag/deoldify-onnx'>Deoldify Onnx repository by Thomas De</a>.   
 
 ### **Demo**
 To see quantized DeOldify model at work, visit the following page: <a href="https://deoldify.glitch.me/">Demo</a> 
