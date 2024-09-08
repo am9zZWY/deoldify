@@ -1,5 +1,7 @@
 # DeOldify on Browser
 
+<img src="img/screenshot.jpg" title="screenshot" alt="screenshot" style="text-align: center">
+
 
 ### **Description / Rationale**
 This repository demonstrates web-based implementation of DeOldify, a Deep Learning based project for colorizing and restoring old images. This project demonstrates implementation of 2 models:
