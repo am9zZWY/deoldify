@@ -123,42 +123,40 @@
     };
 
     const runMyModel = async (image) => {
-      showLoading();  // Show the loading overlay
+  showLoading();  // Show the loading overlay
 
-      await loadModel();
+  await loadModel();
 
-      const size = 256;
-      let canvas = document.getElementById("originalCanvas");
-      canvas.width = size;
-                canvas.height = size;
-                let ctx = canvas.getContext("2d");
-                ctx.drawImage(image, 0, 0, size, size);
-                const input_img = ctx.getImageData(0, 0, size, size);
-                const test = preprocess(input_img, size, size);
-                const input = new ort.Tensor(new Float32Array(test), [1, 3, size, size]);
+  const size = 256;
+  let canvas = document.getElementById("originalCanvas");
+  canvas.width = size;
+  canvas.height = size;
+  let ctx = canvas.getContext("2d");
+  ctx.drawImage(image, 0, 0, size, size);
+  const input_img = ctx.getImageData(0, 0, size, size);
+  const test = preprocess(input_img, size, size);
+  const input = new ort.Tensor(new Float32Array(test), [1, 3, size, size]);
 
-                const result = await myOrtSession.run({
-                    "input": input,
-                });
-                const output = result["out"];
+  const result = await myOrtSession.run({
+    "input": input,
+  });
+  const output = result["out"];
 
-                const imgdata = postprocess(output);
-                canvas.width = output.dims[3];
-                canvas.height = output.dims[2];
-                ctx.putImageData(imgdata, 0, 0);
+  // Create a new canvas to render the processed image data
+  const processedCanvas = document.createElement("canvas");
+  const processedCtx = processedCanvas.getContext("2d");
+  processedCanvas.width = size;
+  processedCanvas.height = size;
+  const imgdata = postprocess(output);
+  processedCtx.putImageData(imgdata, 0, 0);
 
-                // Create a new canvas to resize the output image
-                const resizedCanvas = document.createElement("canvas");
-                const resizedCtx = resizedCanvas.getContext("2d");
-                resizedCanvas.width = image.width;
-                resizedCanvas.height = image.height;
-                resizedCtx.drawImage(canvas, 0, 0, image.width, image.height);
+  // Draw the processed canvas onto the original canvas
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.drawImage(processedCanvas, 0, 0, image.width, image.height);
 
-                // Append the resized canvas to the document body
-                document.body.appendChild(resizedCanvas);
-
-      hideLoading();  // Hide the loading overlay
-    };
+  hideLoading();  // Hide the loading overlay
+};
 
     const showLoading = () => {
       document.getElementById('loadingOverlay').style.display = 'flex';
