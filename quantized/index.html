@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeOldify On Browser</title>
+  <title>De-Oldify On Browser</title>
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
   <style>
     canvas {
@@ -47,7 +47,7 @@
   <input type="file" id="imageInput" accept="image/*" />
   <br />
   <canvas id="originalCanvas"></canvas>
-  <canvas id="processedCanvas"></canvas>
+  
 
   <!-- Loading overlay -->
   <div id="loadingOverlay">
@@ -130,34 +130,32 @@
       const size = 256;
       let canvas = document.getElementById("originalCanvas");
       canvas.width = size;
-      canvas.height = size;
-      let ctx = canvas.getContext("2d");
-      ctx.drawImage(image, 0, 0, size, size);
-      const input_img = ctx.getImageData(0, 0, size, size);
-      const test = preprocess(input_img, size, size);
-      const input = new ort.Tensor(new Float32Array(test), [1, 3, size, size]);
+                canvas.height = size;
+                let ctx = canvas.getContext("2d");
+                ctx.drawImage(image, 0, 0, size, size);
+                const input_img = ctx.getImageData(0, 0, size, size);
+                const test = preprocess(input_img, size, size);
+                const input = new ort.Tensor(new Float32Array(test), [1, 3, size, size]);
 
-      const updateProgress = (progress) => {
-        document.getElementById('loadingText').textContent = `Processing... ${Math.round(progress * 100)}%`;
-      };
+                const result = await myOrtSession.run({
+                    "input": input,
+                });
+                const output = result["out"];
 
-      // Simulate progress (You can remove this and use actual progress tracking if available)
-      let progress = 0;
-      const progressInterval = setInterval(() => {
-        progress += 0.1;
-        updateProgress(Math.min(progress, 1));
-        if (progress >= 1) clearInterval(progressInterval);
-      }, 100);
+                const imgdata = postprocess(output);
+                canvas.width = output.dims[3];
+                canvas.height = output.dims[2];
+                ctx.putImageData(imgdata, 0, 0);
 
-      const result = await myOrtSession.run({ ["input"]: input });
-      const output = result["out"];
+                // Create a new canvas to resize the output image
+                const resizedCanvas = document.createElement("canvas");
+                const resizedCtx = resizedCanvas.getContext("2d");
+                resizedCanvas.width = image.width;
+                resizedCanvas.height = image.height;
+                resizedCtx.drawImage(canvas, 0, 0, image.width, image.height);
 
-      const imgdata = postprocess(output);
-      canvas = document.getElementById("processedCanvas");
-      ctx = canvas.getContext("2d");
-      canvas.width = output.dims[3];
-      canvas.height = output.dims[2];
-      ctx.putImageData(imgdata, 0, 0);
+                // Append the resized canvas to the document body
+                document.body.appendChild(resizedCanvas);
 
       hideLoading();  // Hide the loading overlay
     };
