@@ -37,6 +37,10 @@
             text-align: center;
         }
 
+        .disable {
+            pointer-events: none;
+        }
+
         .upload-section {
             display: flex;
             gap: 1rem;
@@ -44,21 +48,25 @@
             justify-content: center;
         }
 
-        #imageInput {
-            display: none;
+        .drop-zone {
+            border: 2px dashed #4299e1;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+            flex: 0 1 auto; /* This prevents the drop zone from stretching */
+            min-width: 300px; /* Adjust this value as needed */
         }
 
-        .upload-btn {
-            background: #4299e1;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s ease;
+        .drop-zone.dragover {
+            background: #ebf8ff;
+            border-color: #3182ce;
         }
 
-        .upload-btn:hover {
-            background: #3182ce;
+        .drop-zone p {
+            margin-top: 1rem;
+            color: #718096;
         }
 
         #imageDownload {
@@ -68,6 +76,8 @@
             border-radius: 6px;
             text-decoration: none;
             transition: background 0.3s ease;
+            height: fit-content; /* This ensures the button height is based on its content */
+            align-self: flex-start; /* This aligns the button to the top */
         }
 
         #imageDownload:hover {
@@ -131,9 +141,12 @@
 <div class="container">
     <h1>AI Image Colorizer</h1>
     <div class="upload-section">
-        <label for="imageInput" class="upload-btn">Choose Image</label>
-        <input type="file" id="imageInput" accept="image/*"/>
-        <a id="imageDownload" href="#" download>Download Result</a>
+        <div class="drop-zone" id="dropZone">
+            <label for="imageInput" class="upload-btn">Choose Image</label>
+            <p>or drag and drop your image here</p>
+            <input type="file" id="imageInput" accept="image/*"/>
+        </div>
+        <a id="imageDownload" href="#" download class="disable">Download Result</a>
     </div>
     <div class="canvas-container">
         <canvas id="originalCanvas"></canvas>
@@ -305,6 +318,79 @@
 		// Clean up the object URL to prevent memory leaks
 		if (downloadLink.previousURL) {
 			URL.revokeObjectURL(downloadLink.previousURL);
+		}
+
+		// Enable link
+		downloadLink.classList.remove('disable')
+	}
+
+	const dropZone = document.getElementById('dropZone');
+
+	// Prevent default drag behaviors
+	['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+		dropZone.addEventListener(eventName, preventDefaults, false);
+		document.body.addEventListener(eventName, preventDefaults, false);
+	});
+
+	function preventDefaults(e) {
+		e.preventDefault();
+		e.stopPropagation();
+	}
+
+	// Handle drop zone highlighting
+	['dragenter', 'dragover'].forEach(eventName => {
+		dropZone.addEventListener(eventName, highlight, false);
+	});
+
+	['dragleave', 'drop'].forEach(eventName => {
+		dropZone.addEventListener(eventName, unhighlight, false);
+	});
+
+	function highlight(e) {
+		dropZone.classList.add('dragover');
+	}
+
+	function unhighlight(e) {
+		dropZone.classList.remove('dragover');
+	}
+
+	// Handle dropped files
+	dropZone.addEventListener('drop', handleDrop, false);
+
+	function handleDrop(e) {
+		const dt = e.dataTransfer;
+		const files = dt.files;
+
+		if (files.length > 0) {
+			const file = files[0];
+
+			if (!file.type.startsWith('image/')) {
+				alert('Please drop an image file');
+				return;
+			}
+
+			// Update the file input
+			const dataTransfer = new DataTransfer();
+			dataTransfer.items.add(file);
+			document.getElementById('imageInput').files = dataTransfer.files;
+
+			// Process the image
+			showLoading();
+			const image = new Image();
+			image.onerror = function () {
+				hideLoading();
+				alert('Error loading image');
+			};
+
+			image.onload = function () {
+				const originalCanvas = document.getElementById("originalCanvas");
+				originalCanvas.width = image.width;
+				originalCanvas.height = image.height;
+				const ctx = originalCanvas.getContext("2d");
+				ctx.drawImage(image, 0, 0);
+				runMyModel(image);
+			};
+			image.src = URL.createObjectURL(file);
 		}
 	}
 
