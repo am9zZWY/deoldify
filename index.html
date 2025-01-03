@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Image Colorizer</title>
     <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
     <style>
@@ -26,9 +26,10 @@
             max-width: 1200px;
             width: 100%;
             background: white;
-            padding: 2rem;
+            padding: 1rem;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 10px;
         }
 
         h1 {
@@ -43,20 +44,21 @@
 
         .upload-section {
             display: flex;
+            flex-direction: column;
             gap: 1rem;
             margin-bottom: 2rem;
-            justify-content: center;
+            align-items: center;
         }
 
         .drop-zone {
             border: 2px dashed #4299e1;
             border-radius: 8px;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
             background: #f8fafc;
-            flex: 0 1 auto; /* This prevents the drop zone from stretching */
-            min-width: 300px; /* Adjust this value as needed */
+            width: 100%;
+            max-width: 500px;
         }
 
         .drop-zone.dragover {
@@ -69,8 +71,7 @@
             color: #718096;
         }
 
-        #imageDownload {
-            background: #48bb78;
+        .upload-btn, #imageDownload {
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 6px;
@@ -80,15 +81,39 @@
             align-self: flex-start; /* This aligns the button to the top */
         }
 
+        .upload-btn {
+            background: #4882bb;
+        }
+
+        #imageDownload {
+            background: #48bb78;
+        }
+
         #imageDownload:hover {
             background: #38a169;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+
+            .upload-section {
+                flex-direction: row; /* Horizontal layout on larger screens */
+                justify-content: center;
+            }
+
+            .drop-zone {
+                padding: 2rem;
+            }
         }
 
         .canvas-container {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 1rem;
             flex-wrap: wrap;
+            padding: 0.5rem;
         }
 
         canvas {
@@ -124,7 +149,8 @@
         .loadingText {
             margin-top: 1rem;
             color: white;
-            font-size: 1.125rem;
+            font-size: 1rem;
+            padding: 0 1rem;
         }
 
         @keyframes spin {
@@ -146,7 +172,7 @@
             <p>or drag and drop your image here</p>
             <input type="file" id="imageInput" accept="image/*"/>
         </div>
-        <a id="imageDownload" href="#" download class="disable">Download Result</a>
+        <a id="imageDownload" href="#" download class="disable">Download Image</a>
     </div>
     <div class="canvas-container">
         <canvas id="originalCanvas"></canvas>
