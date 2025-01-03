@@ -3,18 +3,29 @@
 <img src="img/screenshot.jpg" title="screenshot" alt="screenshot" style="text-align: center">
 
 
-### **Description / Rationale**
+### About this Fork
+
+Thanks to https://github.com/akbartus for the great work. Thanks to your work, my dad can now enjoy colorizing black and white images of his grandparents 🎉
+
+This fork works on improving the UI for the end-user and adds the following features:
+
+- Image download
+- Drag-and-drop area for images
+- Mobile support
+- Bigger buttons
+
+### Description / Rationale
 This repository demonstrates web-based implementation of <a href="https://github.com/jantic/DeOldify">DeOldify, a Deep Learning based project for colorizing and restoring old images</a>. This project demonstrates implementation of 2 models:
 1. Original artistic DeOldify model ("original" folder)
 2. Quantized DeOldify model ("quantized" folder).
 
-### **Instructions**
+### Instructions
 To use a DeOldify example, copy the corresponding html file contents. To dowload and locally serve models download them from the link provided:
 1. Original artistic model: https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-art.onnx (~243mb)
 2. Quantized model: https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-quant.onnx (~61mb)
 
 
-### **Onnx files and Quantization**
+### Onnx files and Quantization
 Original onnx files were taken from releases page of <a href='https://github.com/instant-high/deoldify-onnx/releases/tag/deoldify-onnx'>Deoldify Onnx repository by Thomas De</a>.
 To quantize an onnx file do the following:
 1. Open Google Colab and create a new Notebook.
