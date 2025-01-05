@@ -38,6 +38,12 @@
             text-align: center;
         }
 
+         a {
+            color: #4299e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
         .disable {
             pointer-events: none;
         }
@@ -166,6 +172,7 @@
 <body>
 <div class="container">
     <h1>AI Image Colorizer</h1>
+
     <div class="upload-section">
         <div class="drop-zone" id="dropZone">
             <label for="imageInput" class="upload-btn">Choose Image</label>
@@ -176,6 +183,11 @@
     </div>
     <div class="canvas-container">
         <canvas id="originalCanvas"></canvas>
+    </div>
+    <div>
+        <a href="https://github.com/am9zZWY/deoldify" target="_blank">
+            Source Code on GitHub
+        </a>
     </div>
 </div>
 
