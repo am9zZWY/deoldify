@@ -92,4 +92,4 @@ Remove initializer from input of deoldify-quant.onnx file (otherwise the model w
 
 
 ### **Demo**
-To see quantized DeOldify model at work, visit the following page: <a href="https://deoldify.glitch.me/">Demo</a> 
+To see quantized DeOldify model at work, visit the following page: [Demo](https://am9zzwy.github.io/deoldify/)
